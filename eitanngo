@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>yoisyo's English Card</title>
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-sub: #7f8c8d;
+            --accent: #3498db;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: transform 0.2s;
+        }
+
+        .word {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .meaning {
+            font-size: 1.5rem;
+            color: var(--accent);
+            opacity: 0; /* 最初は隠しておく */
+            transition: opacity 0.2s;
+        }
+
+        .meaning.visible {
+            opacity: 1;
+        }
+
+        .instructions {
+            margin-top: 30px;
+            color: var(--text-sub);
+            line-height: 1.8;
+        }
+
+        kbd {
+            background-color: #eee;
+            border-radius: 3px;
+            border: 1px solid #b4b4b4;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+            color: #333;
+            display: inline-block;
+            font-size: 0.85em;
+            font-weight: 700;
+            line-height: 1;
+            padding: 2px 4px;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card" id="card">
+        <div class="word" id="word-display">Loading...</div>
+        <div class="meaning" id="meaning-display">意味</div>
+    </div>
+
+    <div class="instructions">
+        <p><kbd>Space</kbd>：意味を表示</p>
+        <p><kbd>Enter</kbd>：次の単語へ</p>
+    </div>
+</div>
+
+<script>
+    // 大学受験レベルのサンプル単語リスト
+    const words = [
+        { en: "acknowledge", ja: "を認める、に謝意を表す" },
+        { en: "acquire", ja: "を習得する、を手に入れる" },
+        { en: "alternative", ja: "代わりの、選択肢" },
+        { en: "consequence", ja: "結果、重要性" },
+        { en: "deteriorate", ja: "悪化する" },
+        { en: "emphasize", ja: "を強調する" },
+        { en: "inevitable", ja: "避けられない" },
+        { en: "precede", ja: "に先行する" },
+        { en: "subsequent", ja: "その後の" },
+        { en: "vague", ja: "あいまいな" }
+    ];
+
+    let currentIndex = 0;
+
+    const wordEl = document.getElementById('word-display');
+    const meaningEl = document.getElementById('meaning-display');
+
+    // 画面を更新する関数
+    function updateCard() {
+        wordEl.textContent = words[currentIndex].en;
+        meaningEl.textContent = words[currentIndex].ja;
+        meaningEl.classList.remove('visible');
+    }
+
+    // キーボード入力の判定
+    document.addEventListener('keydown', (event) => {
+        if (event.code === 'Space') {
+            event.preventDefault(); // 画面スクロール防止
+            meaningEl.classList.add('visible');
+        } else if (event.code === 'Enter') {
+            currentIndex = (currentIndex + 1) % words.length;
+            updateCard();
+        }
+    });
+
+    // 初期表示
+    updateCard();
+</script>
+
+</body>
+</html>
